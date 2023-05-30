@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        h1{
+            margin: 0;
+            top: 0;
+        }
+        body{
+            padding: 0;
+            margin: 0;
+        }
+        #warp{
+            margin: 0;
+            padding: 0px;
+        }
+        #header{
+            height: 200px;
+            background: linear-gradient(to left, #0F2027, #203A43, #2C5364 );
+
+        }
+        #content{
+            background-color: #f6fdff;
+        }
+        .container{
+            width: 990px;
+            height: inherit;
+            margin: 0 auto;
+/*            background-color: rgba(255, 255, 255, 0.7);*/
+        }
+
+
+
+        .header{
+            overflow: hidden;
+            text-align: center;
+        }
+        .header .header-tit{
+            background: linear-gradient(to left, #aa4b6b, #6b6b83, #3b8d99 );
+            box-shadow: 10px 10px #3b8d99;
+            font-size: 28px;
+            padding: 5px 20px 6px 20px;
+            display: inline-block;
+            color: #fff;
+            margin-top: 40px;
+            font-weight: normal;
+        }
+
+
+
+
+
+        .cont_ban{
+            background-color: #3b8d99;
+            height: 50px;
+        }
+        .cont_ban .prev{
+            color: #222;
+        }
+
+        .cont{
+            padding: 30px;
+            text-align: center;
+
+        }
+
+
+        .box{
+            border-radius: 10px;
+            display: inline-block;
+            width: 200px;
+            height: 220px;
+            border: 1px solid #cccccc;
+            margin-left: 10px;
+            margin-right: 10px;
+            overflow: auto;
+            margin-bottom: 20px;
+            text-align: left;
+            box-shadow: 5px 5px rgba(227, 227, 227, 0.7);
+        }
+        .box:hover{
+            background-color: #f8f8f8;
+            visibility: visible;
+        }
+
+        .box::-webkit-scrollbar {
+          width: 0;
+        }
+
+        .box span{
+            display: block;
+            font-size: 12px;
+        }
+        .box .festivalName{
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+            color: #298829;
+            border-bottom: 1px solid #cccccc;
+            background-color: #f8f8f8;
+        }
+        .box .notice1{
+            padding: 3px;
+        }
+        .box .notice1 span{
+            padding-top: 5px;
+            margin: 3px;
+        }
+        .box .notice1 h4{
+            border-bottom: 1px solid #cccccc;
+            display: block;
+            margin: 0;
+            font-size: 12px;
+            color: #222;
+            font-weight: bold;
+            padding: 5px;
+        }
+        .box .festivalVenue{
+        }
+        .box .fstvlStartDate{
+            display: inline;
+        }
+        .box .fstvlEndDate{
+            display: inline;
+        }
+        .box .fstvlCo{
+        }
+
+
+    </style>
+</head>
+<body>
+
+<div id="warp">
+
+    <div id="header">
+        <div class="container">
+            <div class="header">
+                <div class="header-tit">
+                    <h1>전국문화축제표준데이터</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="content">
+      <!--conatiner-->
+        <div class="cont_ban">
+             <div class="container">
+              <a href="" class="prev">이전 페이지</a>
+             </div>
+        </div>
+        <div class="cont">
+          <div class="container">
+          <!--cont-->
+           {% for i in range(festivalName|length) %}
+            <div class="box">
+                <span class="festivalName"> {{festivalName[i]}} </span>
+
+                <div class="notice1">
+                <h4>장소</h4>
+                <span class="festivalVenue"> {{festivalVenue[i]}} </span>
+                <h4>일정</h4>
+                <span class="fstvlStartDate"> {{fstvlStartDate[i]}} </span> ~
+                <span class="fstvlEndDate"> {{fstvlEndDate[i]}} </span>
+                <h4>주최 기관 및 주소</h4>
+                <span class="location"> {{location[i]}} </span>
+                <span class="address">{{address[i]}} </span>
+                </div>
+
+<!--                <span class="fstvlCo"> 축제설명 : {{fstvlCo[i]}} </span>-->
+            </div>
+
+                {% endfor %}
+          </div>
+        <!--//conatiner-->
+        </div>
+       <!--//cont-->
+    </div>
+    </div>
+
+</body>
+</html>
