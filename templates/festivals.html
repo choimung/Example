@@ -148,28 +148,20 @@
       <!--conatiner-->
         <div class="cont_ban">
              <div class="container">
-              <a href="" class="prev">이전 페이지</a>
+                 <button onclick="nextPage()">Click Me</button>
+
              </div>
         </div>
         <div class="cont">
           <div class="container">
           <!--cont-->
-           {% for i in range(festivalName|length) %}
+            {% for festival in festivals %}
             <div class="box">
-                <span class="festivalName"> {{festivalName[i]}} </span>
-
-                <div class="notice1">
-                <h4>장소</h4>
-                <span class="festivalVenue"> {{festivalVenue[i]}} </span>
-                <h4>일정</h4>
-                <span class="fstvlStartDate"> {{fstvlStartDate[i]}} </span> ~
-                <span class="fstvlEndDate"> {{fstvlEndDate[i]}} </span>
-                <h4>주최 기관 및 주소</h4>
-                <span class="location"> {{location[i]}} </span>
-                <span class="address">{{address[i]}} </span>
-                </div>
-
-<!--                <span class="fstvlCo"> 축제설명 : {{fstvlCo[i]}} </span>-->
+           <h2>{{ festival.name }}</h2>
+            <p>Location: {{ festival.location }}</p>
+            <p>Date: {{ festival.start_date }} - {{ festival.end_date }}</p>
+            <p>Description: {{ festival.description }}</p>
+            <p>Address: {{festival.venues}}
             </div>
 
                 {% endfor %}

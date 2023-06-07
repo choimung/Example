@@ -1,118 +1,94 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, render_template, request
 import requests
 import xml.etree.ElementTree as ET
 import html
-import json
 
 app = Flask(__name__)
 
+# 페이지별로 축제정보 렌더링
+@app.route('/festivals')
+def page_view():
+    end_page = 2
+    return render_template('festivals.html', festivals=get_festivals(end_page))
 
-# 모든 축제 정보를 요청후 리턴
-@app.route('/festivals/<pageNo>')
-def view_all(pageNo):
-    return get_festivals(pageNo)
-
-
-def get_festivals(pageNo):
+def get_festivals(page_number, search_query=None, year='2023'):
     url = 'http://api.data.go.kr/openapi/tn_pubr_public_cltur_fstvl_api'
-    params = {
-        'serviceKey': 'PH9LodLRmVyqEv1l/OVszYUfRG4OtB21PyMWnlDD/1cf/PSLnO4GONguUMsbMlXDmSMzwHWK4/6YSifuhD5kKA==',
-        'pageNo': pageNo,
-        'type': 'xml',
-    }
+    festivals = []
 
-    response = requests.get(url, params=params)
-    response.encoding = 'utf-8'
+    for page in range(1, page_number + 1):
+        params = {
+            'serviceKey': 'PH9LodLRmVyqEv1l/OVszYUfRG4OtB21PyMWnlDD/1cf/PSLnO4GONguUMsbMlXDmSMzwHWK4/6YSifuhD5kKA==',
+            'pageNo': page,
+            'type': 'xml',
+        }
+        response = requests.get(url, params=params)
+        response.encoding = 'utf-8'
 
-    festivalName = []           # 축제이름을 저장하는 배열
-    festivalVenue = []          # 개최장소를 저장하는 배열
-    fstvlStartDate = []         # 축제시작일를 저장하는 배열
-    fstvlEndDate = []           # 축제종료일를 저장하는 배열
-    fstvlCo = []                # 축제소개를 저장하는 배열
-    location = []               # 축제장소를 저장하는 배열
-    address = []
+        if response.status_code == 200:
+            xml_data = response.text
+            root = ET.fromstring(xml_data)
 
+            for item in root.findall('.//item'):
+                festival_start_year = html.unescape(item.find('fstvlStartDate').text).split("-")
+                if festival_start_year[0] != year:
+                    continue
 
-    if response.status_code == 200:
-        xml_data = response.text
-        root = ET.fromstring(xml_data)
+                festival_name = html.unescape(item.find('fstvlNm').text)
+                if search_query and search_query.lower() not in festival_name.lower():
+                    continue
 
-        for item in root.findall('.//item'):
+                festival = {
+                    'name': html.unescape(item.find('fstvlNm').text),
+                    'location': html.unescape(item.find('opar').text),
+                    'start_date': html.unescape(item.find('fstvlStartDate').text),
+                    'end_date': html.unescape(item.find('fstvlEndDate').text),
+                    'description': html.unescape(item.find('fstvlCo').text),
+                    'venues': html.unescape(item.find('rdnmadr').text or item.find('lnmadr').text)
+                }
+                festivals.append(festival)
 
-            fstvlNm = item.find('fstvlNm').text             # fsvmlNm 태그의 값을 찾고 값 을  가져온다.
-            opar = item.find('opar').text                   # opar 태그의 값을 찾고 값 을  가져온다.
-            StartDate = item.find('fstvlStartDate').text    # StartDate 태그의 값을 찾고 값 을  가져온다.
-            EndDate = item.find('fstvlEndDate').text        # EndDate 태그의 값을 찾고 값 을  가져온다.
-            fstvlComent = item.find('fstvlCo').text         # fstvlComent 태그의 값을 찾고 값 을  가져온다.
-            auspcInstt = item.find('auspcInstt').text       # auspcInstt 태그의 값을 찾고 값 을  가져온다.
-            rdnmadr = item.find('rdnmadr').text       # auspcInstt 태그의 값을 찾고 값 을  가져온다.
-
-            if(rdnmadr != None):
-                decoded_name = html.unescape(rdnmadr)
-                address.append(decoded_name)
-            else:
-                lnmadr = item.find('lnmadr').text  # auspcInstt 태그의 값을 찾고 값 을  가져온다.
-                decoded_name = html.unescape(lnmadr)
-                address.append(decoded_name)
-
-            decoded_name = html.unescape(fstvlNm)
-            festivalName.append(decoded_name)
-
-            decoded_name = html.unescape(opar)
-            festivalVenue.append(decoded_name)
-
-            decoded_name = html.unescape(StartDate)
-            fstvlStartDate.append(decoded_name)
-
-            decoded_name = html.unescape(EndDate)
-            fstvlEndDate.append(decoded_name)
-
-            decoded_name = html.unescape(fstvlComent)
-            fstvlCo.append(decoded_name)
-
-            decoded_name = html.unescape(auspcInstt)
-            location.append(decoded_name)
+    return festivals
 
 
-            # Convert festivals list to JSON
-            # json_data = json.dumps(festivals, ensure_ascii=False)
 
-    return render_template('festivals.html',
-                           festivalName=festivalName, festivalVenue=festivalVenue, fstvlStartDate=fstvlStartDate,
-                           fstvlEndDate=fstvlEndDate, fstvlCo=fstvlCo, location=location, address=address)
-
-
-@app.route('/festivals/search')
-def search():
-    return render_template('test.html')
-
-
-@app.route('/result', methods=['POST'])
-def search_festivals():
-    festival_id = request.form.get('id')
-    festival_name = request.args.get('fstvn')
-    festival_year = request.args.get('fstv')
-
-    return render_template('result.html', festival_id=festival_id)
-
-
-@app.route('/test')
-def index():
-    fruits = ['Apple', 'Banana', 'Orange', 'Mango']
-    return render_template('test1.html', fruits=fruits)
-
-
-@app.route('/main')
-def h():
-    return render_template('test.html')
-
-
-@app.route('/hello')
-def hello():
-    name = request.args.get('name')  # 'name' 파라미터 값 가져오기
-    age = request.args.get('age')  # 'age' 파라미터 값 가져오기
-
-    return f"Hello, {name}! You are {age} years old."
+# def get_festivals(page_number, search_query=None, year = '2023'):
+#
+#     url = 'http://api.data.go.kr/openapi/tn_pubr_public_cltur_fstvl_api'
+#     params = {
+#         'serviceKey': 'PH9LodLRmVyqEv1l/OVszYUfRG4OtB21PyMWnlDD/1cf/PSLnO4GONguUMsbMlXDmSMzwHWK4/6YSifuhD5kKA==',
+#         'pageNo': page_number,
+#         'type': 'xml',
+#     }
+#     response = requests.get(url, params=params)
+#     response.encoding = 'utf-8'
+#
+#     festivals = []
+#
+#     if response.status_code == 200:
+#         xml_data = response.text
+#         root = ET.fromstring(xml_data)
+#
+#         for item in root.findall('.//item'):
+#
+#             festival_start_year = html.unescape(item.find('fstvlStartDate').text).split("-")
+#             if festival_start_year[0] != year:
+#                 continue
+#
+#             festival_name = html.unescape(item.find('fstvlNm').text)
+#             if search_query and search_query.lower() not in festival_name.lower():
+#                 continue
+#
+#             festival = {'name': html.unescape(item.find('fstvlNm').text),
+#                         'location': html.unescape(item.find('opar').text),
+#                         'start_date': html.unescape(item.find('fstvlStartDate').text),
+#                         'end_date': html.unescape(item.find('fstvlEndDate').text),
+#                         'description': html.unescape(item.find('fstvlCo').text),
+#                         'venues': html.unescape(item.find('rdnmadr').text or item.find('lnmadr').text)
+#                         }
+#
+#             festivals.append(festival)
+#
+#     return festivals
 
 
 if __name__ == '__main__':
