@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    
+    <!--style-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="C:\Users\USER\PycharmProjects\pythonProject4\static\style.css">
+    
+    
+    <!--font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Song+Myung&display=swap" rel="stylesheet">
+    
+    
+</head>
+<body>
+   
+   <div id="wrap">
+       
+       <div id="header">
+           <div class="container">
+               <div class="header">
+                    <div class="header_bgc"></div>
+                    
+                   <div class="header_tit">
+                       <h1>전국문화축제</h1>
+                   </div>
+                   
+                   <div class="header_search">
+                      <form action="#">
+                       <input type="text" name="seach" placeholder="검색어를 입력하여주세요.">
+                          <input type="submit" value="검색" >
+                      </form>
+                   </div>
+
+               </div>
+           </div>
+       </div>
+       <div id="content">
+           <div class="container">
+            <div class="content">        
+                 <div class="cont_selecter">
+                   
+                     <select class="select1" onchange="redirectToPage()">
+                      <option value="value1">2023</option>
+                      <option value="value2">2022</option>
+                    </select>
+
+                    <select class="select2" onchange="redirectToPage()">
+                      <option value="">월</option>
+                      <option value="option1">01</option>
+                      <option value="option2">02</option>
+                    </select>
+
+                    <script>
+                      function redirectToPage() {
+                        var select1 = document.querySelector(".select1");
+                        var select2 = document.querySelector(".select2");
+
+                        var selectedValue1 = select1.value;
+                        var selectedValue2 = select2.value;
+
+                        if (selectedValue1 && selectedValue2) {
+                          var combinedValue = selectedValue1 + selectedValue2;  // 값들을 조합
+                          var url = "https://example.com/" + combinedValue;  // 조합된 값을 기반으로 URL 생성
+                          window.location.href = url;  // 페이지 리다이렉션
+                        }
+                      }
+                    </script>
+                    
+                    <div class="cont_cont">
+                        {% for festival in festivals %}
+                        <div class="cont_box">
+                            <h3>{{ festival.name }}</h3>
+                            <p class="desc">{{ festival.description }}</p>
+                            <p>{{ festival.start_date }} - {{ festival.end_date }}</p>
+                            <p>{{festival.venues}}
+                        </div>
+                        {% endfor %}
+                    </div>
+
+
+                 </div>
+            </div>
+ 
+           </div>
+       </div>
+       <div id="footer">
+           <div class="container"></div>
+       </div>
+       
+   </div>
+    
+</body>
+</html>
