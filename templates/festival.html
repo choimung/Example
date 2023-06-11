@@ -41,7 +41,11 @@
 
                    <div class="header_search">
                       <form action="#">
+<<<<<<< HEAD
                        <input type="text" name="search" placeholder="축제명이나 축제지역을 입력하여주세요.">
+=======
+                       <input type="text" name="search" placeholder="검색어를 입력하여주세요.">
+>>>>>>> edcb8010bf41af5490414fa5fb44c9e358aaea91
                           <input type="submit" value="검색" >
                       </form>
                    </div>
@@ -53,6 +57,7 @@
             <div class="content">
                  <div class="cont_selecter">
 
+<<<<<<< HEAD
 
 
                     <select class="select2" onchange="redirectToPage('month')">
@@ -79,6 +84,34 @@
                       <option value="2020">2020</option>
                       <option value="2019">2019</option>
                       <option value="2018">2018</option>
+=======
+                     {{ search_results }}
+
+                     <select class="select1" onchange="redirectToPage()">
+                         <option value="">년</option>
+                      <option value="year=2023">2023</option>
+                      <option value="year=2022">2022</option>
+                      <option value="year=2021">2021</option>
+                      <option value="year=2020">2020</option>
+                      <option value="year=2019">2019</option>
+                      <option value="year=2018">2018</option>
+                    </select>
+
+                    <select class="select2" onchange="redirectToPage()">
+                      <option value="">월</option>
+                      <option value="month=01">01</option>
+                      <option value="month=02">02</option>
+                      <option value="month=03">03</option>
+                      <option value="month=04">04</option>
+                      <option value="month=05">05</option>
+                      <option value="month=06">06</option>
+                      <option value="month=07">07</option>
+                      <option value="month=08">08</option>
+                      <option value="month=09">09</option>
+                      <option value="month=10">10</option>
+                      <option value="month=11">11</option>
+                      <option value="month=12">12</option>
+>>>>>>> edcb8010bf41af5490414fa5fb44c9e358aaea91
                     </select>
 
                     <script>
@@ -90,6 +123,7 @@
                         var selectedYear = urlParams.get("year");
                         var selectedMonth = urlParams.get("month");
 
+<<<<<<< HEAD
                         if (selectedYear) {
                           select1.value = selectedYear;
                         }
@@ -110,6 +144,15 @@
                         currentURL.searchParams.set("month", selectedMonth);
 
                         window.location.href = currentURL.href;
+=======
+                          if (selectedValue1 && selectedValue2) {
+                            var combinedValue = selectedValue1 + "&" + selectedValue2;
+                            var currentURL = window.location.href;  // 현재 URL 가져오기
+                            var baseURL = currentURL.split("?")[0];  // 중복 부분을 제외한 기본 URL 가져오기
+                            var url = baseURL + "?" + combinedValue;  // 새로운 URL 생성
+                            window.location.href = url;  // 페이지 리다이렉션
+                            }
+>>>>>>> edcb8010bf41af5490414fa5fb44c9e358aaea91
                       }
                     </script>
 
