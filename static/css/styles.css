@@ -6,11 +6,23 @@ h1,h2,h3,h4,a{
     margin: 0;
     padding: 0;
 }
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding-right: 0px; /* 화살표를 없애면서 선택된 항목 표시를 위한 오른쪽 여백 추가 */
+  background: none;
+}
+
+a{
+    text-decoration: none;
+}
+
 
 
 /*레이아웃*/
 #header{
-    height: 16vh;
+    height: 250px;
 /*    background-color: #222;*/
 }
 
@@ -41,11 +53,11 @@ h1,h2,h3,h4,a{
 .header_bgc{
     border-radius: 8px;
     position: relative;
-    height: 80px;
+    height: 130px;
     background-color: #ad1d1d;
-    background-image: url("/static/images/hgc.jpg"); no-repeat;
+    background-image: url("/static/images/hgc.jpg"); no-repeat;-repeat;
     background-position: 1px;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 .header_bgc:before{
     position: absolute;
@@ -62,10 +74,9 @@ h1,h2,h3,h4,a{
 .header_tit{
 }
 .header_tit h1{
-    margin-top: 10px;
+    margin-top: 5px;
     font-weight: normal;
-    letter-spacing: 3px;
-    margin-left: -5px;
+    margin-left: -3px;
     font-size: 50px;
     color: #000000;
     font-family: 'Song Myung', serif;
@@ -80,25 +91,30 @@ h1,h2,h3,h4,a{
     position: absolute;
     top: 108px;
 }
-.header_tit h1:before{
-    content: ''; 
-    width: 4px; 
-    height: 35px; 
-    background: #000000; 
-    position: absolute; 
-    left: 285px; 
-    top: 12px;
+/*.header_tit h1:before{
+    content: '';
+    width: 3px;
+    height: 33px;
+    background: #000000;
+    position: absolute;
+    left: 265px;
+    top: 14px;
+}*/
+.header p{
+    margin-top: -2px;
+    margin-left: 1px;
+    font-size: 16px;
 }
 .header_search{
     position: absolute;
-    top: 108px;
+    top: 150px;
     right: 0;
 }
 .header_search form{
     color: #000;
 }
 .header_search input[type=text]{
-    width: 200px;
+    width: 250px;
     height: 32px;
     border-radius: 5px;
     border: 1px solid #ccc;
@@ -119,17 +135,23 @@ h1,h2,h3,h4,a{
 .content{
     border-top: 1px solid #ccc;
 }
+.content .result{
+    text-align: center;
+    display:block;
+    margin-top:20px;
+}
 .content .cont_selecter{
     margin-top: 13px;
 }
 .cont_selecter select{
-    width: 120px;
-    height: 40px;
+    float: right;
+    width: 50px;
+    height: 30px;
     margin-right: 10px;
-    border-radius: 10px;
+    border-radius: 3px;
     border: 1px solid #acacac;
     text-align: center;
-    font-size: 20px;
+    font-size: 12px;
     box-shadow: 2px 2px 1px rgba(142, 142, 142, 0.15);
 }
 .cont_selecter .select1{
